@@ -18,6 +18,24 @@
 
 const prompt = require("prompt-sync")(); //require the package, then give you access to the function to get user info
 
+const ROWS = 3;
+const COLS = 3;
+
+const SYMBOLS_COUNT = { //value of each symbol
+    A: 2,
+    B: 4,
+    C: 6,
+    D: 8
+}
+
+const SYMBOLS_VALUES = {
+    A: 5, //if I have a line of As, multiply the bet by 5, etc....
+    B: 4,
+    C: 3,
+    D: 2
+}
+
+
 
 const deposit = () => {
     while (true) {
@@ -57,6 +75,37 @@ const getBet = (balance, lines) => {  // need to pass a balance (parameter) when
         }
         }
 }
+
+const spin = () => { //all the possible symbols inside an array, randomly select them in the array, and then remove them 
+    const symbols = [];
+    for (const [symbol, count] of Object.entries(SYMBOLS_COUNT)) { 
+        for (let i = 0; i < count; i ++) {
+            symbols.push(symbol);
+        }
+    } 
+
+ //copy the symbols that we have available to choose for each reel into another array. 
+ //Once the symbol is randomly picked, it is added to the reel, and must then 
+ // be removed from the available symbols to continue to select. They have to be removed so they are not picked again.
+ //But when we move on to the next reel, we must still have the symbols available for the next reel, so the symbols must be removed from a list specific to each reel.
+ //Each reel hast their on symbols that they can pick from. So we need to have a copy of the symbols (reelSymbols) that we are manipulating inside the for loop. =D
+    
+ const reels = [[],[],[]]; //each nested array is a column
+    for (let i = 0; i < COLS; i++) {
+        const reelSymbols = [...symbols]; 
+        for (let j = 0; j < ROWS; j++) {
+            const randomIndex = Math.floor(Math.random() * reelSymbols.length);
+            const selectedSymbol = reelSymbols[randomIndex];//selecting the symbol at this random index
+            reels[i].push(selectedSymbol); //pushing into the interior array the selected symbol
+            reelSymbols.splice(randomIndex, 1); // and then removing it so that we don't select it again
+        }
+    }
+
+    return reels;
+};
+
+const reels = spin();
+console.log("reels --->", reels);
 
 let balance = deposit();
 console.log("Here is the deposited amount: ", balance);
