@@ -45,9 +45,24 @@ const getNumberOfLines = () => {
     }
 };
 
-const depositAmount = deposit();
-console.log("Here is the deposited amount: ", depositAmount);
+const getBet = (balance) => {  // need to pass a balance (parameter) when I call it 
+    while (true) {
+        const bet = prompt("Enter the total bet: ");
+        const numberBet = parseFloat(bet); //convert string to number
+        
+        if (isNaN(numberBet) || numberBet <= 0 || numberBet > balance) {
+            console.log("Invalid bet, try again.");
+        } else {
+            return numberBet;
+        }
+        }
+}
+
+let balance = deposit();
+console.log("Here is the deposited amount: ", balance);
 
 const numberOfLines = getNumberOfLines();
 console.log("Number of lines chosen: ", numberOfLines);
 
+let bet = getBet(balance);
+console.log("Your bet is ", bet);
