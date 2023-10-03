@@ -45,12 +45,12 @@ const getNumberOfLines = () => {
     }
 };
 
-const getBet = (balance) => {  // need to pass a balance (parameter) when I call it 
+const getBet = (balance, lines) => {  // need to pass a balance (parameter) when I call it 
     while (true) {
-        const bet = prompt("Enter the total bet: ");
+        const bet = prompt("Enter the bet per line: ");
         const numberBet = parseFloat(bet); //convert string to number
         
-        if (isNaN(numberBet) || numberBet <= 0 || numberBet > balance) {
+        if (isNaN(numberBet) || numberBet <= 0 || numberBet > balance / lines) {
             console.log("Invalid bet, try again.");
         } else {
             return numberBet;
@@ -64,5 +64,5 @@ console.log("Here is the deposited amount: ", balance);
 const numberOfLines = getNumberOfLines();
 console.log("Number of lines chosen: ", numberOfLines);
 
-let bet = getBet(balance);
-console.log("Your bet is ", bet);
+const bet = getBet(balance, numberOfLines);
+console.log(`Your bet per line is ${bet} and your total bet is ${bet*numberOfLines}`);
