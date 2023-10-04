@@ -107,7 +107,7 @@ const spin = () => { //all the possible symbols inside an array, randomly select
 
 
 //TRANSPOSING A MATRIX
-const transpose = (reel) => {
+const transpose = (reels) => {
     const rows = [];
     //for loop that goes through the number of rows that we have, 
     //for each row (row 0, 1, 2, etc...)we are gonna collect all the elements 
@@ -160,24 +160,48 @@ const getWinnings = (rows, bet, lines) => {// if the player only bet on 1, check
 }
 
 
+//Give user their winnings
+
+ const game = () => {
+     let balance = deposit();
+
+     while (true) {
+         console.log(`You have a balance of $ ${balance}`);
+         
+         const numberOfLines = getNumberOfLines();
+         console.log("Number of lines chosen: ", numberOfLines);
+         
+         const bet = getBet(balance, numberOfLines);
+         console.log(`Your bet per line is ${bet} and your total bet is ${bet*numberOfLines}`);
+         
+         balance -= bet * numberOfLines; //subtract the bet * number of lines from the balance
+
+         const reels = spin();
+         console.log("reels --->", reels);
+         
+         const rows = transpose(reels);
+         console.log("rows --->",rows);
+         
+         printRows(rows);
+         
+         const winnings = getWinnings(rows, bet, numberOfLines);
+         balance += winnings; //give the player his winnings and add it to the balance
+         if (winnings == 0) {
+            console.log("You lose!")
+         } else {
+             console.log(`You won $ ${winnings.toString()} and your updated balance is of $ ${balance}`);
+         }
 
 
-let balance = deposit();
-console.log("Here is the deposited amount: ", balance);
+         if (balance <= 0) {
+            console.log("You ran out of money!");
+            break;
+         }
 
-const numberOfLines = getNumberOfLines();
-console.log("Number of lines chosen: ", numberOfLines);
+         const playAgain = prompt("Do you want to play again (y/n) ?");
+         if (playAgain != "y") break;
+     }
+ };
 
-const bet = getBet(balance, numberOfLines);
-console.log(`Your bet per line is ${bet} and your total bet is ${bet*numberOfLines}`);
+ game();
 
-const reels = spin();
-console.log("reels --->", reels);
-
-const rows = transpose(reels);
-console.log("rows --->",rows);
-
-printRows(rows);
-
-const winnings = getWinnings(rows, bet, numberOfLines);
-console.log("You won, $" + winnings.toString());
