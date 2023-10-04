@@ -106,7 +106,7 @@ const spin = () => { //all the possible symbols inside an array, randomly select
 };
 
 
-//transposing a matrix
+//TRANSPOSING A MATRIX
 const transpose = (reel) => {
     const rows = [];
     //for loop that goes through the number of rows that we have, 
@@ -122,6 +122,7 @@ const transpose = (reel) => {
     return rows
 };
 
+//PRINTING THE ROWS
 const printRows = (rows) => {
     for (const row of rows) { // we go into every single row in our rows
         let rowString = ""; //that's gonna give us an array representing the elements in that row
@@ -134,6 +135,31 @@ const printRows = (rows) => {
         console.log(rowString);
     }
 }
+
+//CHECK IF PLAYER WON
+const getWinnings = (rows, bet, lines) => {// if the player only bet on 1, check just one row. If bet 2, two rows....
+    let winnings = 0;
+
+    for (let row = 0; row < lines; row ++) { //if the lines is 1, we are only gonna look at index 0. If lines =2, look at index 0 and 1...
+        const symbols = rows[row];
+        let allSame = true; //if we find that one of the symbols is not the same, we are gonna make this variable false, and use that later to determine if the user won in this specific row.
+
+        for (const symbol of symbols) { //loop through every symbol that I have
+            if (symbol != symbols[0]){ //if every single symbol that I have is the same as the first symbol, all of them are gonna be the same. (use the first symbol as a start to compare to the rest, aka index 0)
+                allSame = false; //if one is not the same, break out of the loop. No need to continue looping.
+                break; //out!  :)
+            }
+        }
+
+        if (allSame) {
+            winnings += bet * SYMBOLS_VALUES[symbols[0]]// multiply by the value of the symbol. We are grabbing index 0, as we know all of them must be the same (they could all be the same as index 1 or 2 also!)
+        }
+    }
+
+    return winnings;
+}
+
+
 
 
 let balance = deposit();
@@ -152,3 +178,6 @@ const rows = transpose(reels);
 console.log("rows --->",rows);
 
 printRows(rows);
+
+const winnings = getWinnings(rows, bet, numberOfLines);
+console.log("You won, $" + winnings.toString());
