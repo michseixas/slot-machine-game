@@ -3,7 +3,7 @@
 
 // Game logic:
 // 1. Deposit some money
-// 2. determine number of lines to bet on
+// 2. Determine number of lines to bet on
 // 3. Collect a bet amount
 // 4. Spin the slot machine
 // 5. Check if the user won 
@@ -90,11 +90,12 @@ const spin = () => { //all the possible symbols inside an array, randomly select
  //But when we move on to the next reel, we must still have the symbols available for the next reel, so the symbols must be removed from a list specific to each reel.
  //Each reel hast their on symbols that they can pick from. So we need to have a copy of the symbols (reelSymbols) that we are manipulating inside the for loop. =D
     
- const reels = [[],[],[]]; //each nested array is a column
+ const reels = []; //for every single column (reel). Once we add it, we can push elements inside of that reel
     for (let i = 0; i < COLS; i++) {
-        const reelSymbols = [...symbols]; 
+        reels.push([]);
+        const reelSymbols = [...symbols]; //copy all of the available symbols that we have
         for (let j = 0; j < ROWS; j++) {
-            const randomIndex = Math.floor(Math.random() * reelSymbols.length);
+            const randomIndex = Math.floor(Math.random() * reelSymbols.length); //we pick one of the symbols that are available
             const selectedSymbol = reelSymbols[randomIndex];//selecting the symbol at this random index
             reels[i].push(selectedSymbol); //pushing into the interior array the selected symbol
             reelSymbols.splice(randomIndex, 1); // and then removing it so that we don't select it again
@@ -104,8 +105,21 @@ const spin = () => { //all the possible symbols inside an array, randomly select
     return reels;
 };
 
-const reels = spin();
-console.log("reels --->", reels);
+
+//transposing a matrix
+const transpose = (reel) => {
+    const rows = [];
+    //for loop that goes through the number of rows that we have, 
+    //for each row (row 0, 1, 2, etc...)we are gonna collect all the elements 
+    //from our columns that are in that row and then push that into the rows' arrays
+    for (let i = 0; i < ROWS; i++) { // for every single row, loop through every single column
+        rows.push([]);
+        for (let j = 0; j < COLS; j++) {
+
+        }
+    }
+}
+
 
 let balance = deposit();
 console.log("Here is the deposited amount: ", balance);
@@ -115,3 +129,6 @@ console.log("Number of lines chosen: ", numberOfLines);
 
 const bet = getBet(balance, numberOfLines);
 console.log(`Your bet per line is ${bet} and your total bet is ${bet*numberOfLines}`);
+
+const reels = spin();
+console.log("reels --->", reels);
