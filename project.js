@@ -113,10 +113,25 @@ const transpose = (reel) => {
     //for each row (row 0, 1, 2, etc...)we are gonna collect all the elements 
     //from our columns that are in that row and then push that into the rows' arrays
     for (let i = 0; i < ROWS; i++) { // for every single row, loop through every single column
-        rows.push([]);
-        for (let j = 0; j < COLS; j++) {
+        rows.push([]); //creates a new "small" array inside the big array before entering the for "j" loop
+        for (let j = 0; j < COLS; j++) { // only exits the "j" loop once the for has iterated through COLS (3 times)
+            rows[i].push(reels[j][i]) //push into the "small" array the value of reels in the position j, i
 
         }
+    }
+    return rows
+};
+
+const printRows = (rows) => {
+    for (const row of rows) { // we go into every single row in our rows
+        let rowString = ""; //that's gonna give us an array representing the elements in that row
+        for (const [i, symbol] of row.entries()){ // loop through both the index and the element that existe in this row
+            rowString += symbol
+            if (i != row.lenght -1) { //check if the index is the last element. If it is, don't put the pipe.
+                rowString += " | "
+            }
+        }
+        console.log(rowString);
     }
 }
 
@@ -132,3 +147,8 @@ console.log(`Your bet per line is ${bet} and your total bet is ${bet*numberOfLin
 
 const reels = spin();
 console.log("reels --->", reels);
+
+const rows = transpose(reels);
+console.log("rows --->",rows);
+
+printRows(rows);
